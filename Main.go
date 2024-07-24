@@ -48,7 +48,7 @@ func receiveMessages(svc *sqs.SQS, sqsURL string) {
 	resp, err := svc.ReceiveMessage(&sqs.ReceiveMessageInput{
 		QueueUrl:            aws.String(sqsURL),
 		MaxNumberOfMessages: aws.Int64(1),
-		WaitTimeSeconds:     aws.Int64(2),
+		WaitTimeSeconds:     aws.Int64(10),
 	})
 
 	if err != nil {
@@ -58,8 +58,13 @@ func receiveMessages(svc *sqs.SQS, sqsURL string) {
 
 	for _, message := range resp.Messages {
 		fmt.Printf("Message: %s\n", aws.StringValue(message.Body))
+
 		// ... processing and deleting messages
 
+	}
+	if len(resp.Messages) == 0 {
+		fmt.Println("No messages found.")
+		return
 	}
 }
 
