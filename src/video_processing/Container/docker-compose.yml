@@ -1,0 +1,12 @@
+version: '26.1.4'
+
+services:
+  app:
+    image: Mux_Clone_Go
+    build:
+      context: ..
+      dockerfile: src/video_processing/Container/Dockerfile
+    ports:
+      - "8000:8000"
+    env_file:
+      - ../../.env
