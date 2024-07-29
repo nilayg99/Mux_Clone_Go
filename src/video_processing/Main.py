@@ -33,13 +33,14 @@ def change_video_resolution(input_path, output_path, resolution = "1280x720"):
         except Exception as e:
             print(f'Error converting video: {e}')
 
+
+
 def process_videos_in_folder():
     print ("Inside process_videos_in_folder()")
     
     # Iterate through all files in the input folder
     for filename in os.listdir(Raw_videos_destination_path):
         input_path = os.path.join(Raw_videos_destination_path, filename).replace('\\', '/')
-        #input_path = os.path.normpath(input_path)
         
         # Skip directories and non-video files
         if not os.path.isfile(input_path) or not filename.lower().endswith(('.mp4', '.mkv', '.avi')):
@@ -48,8 +49,7 @@ def process_videos_in_folder():
         # Define the output path and change the resolution
         name, ext = os.path.splitext(filename)
         output_path = os.path.join(processed_videos_destination_path, f'{name}_720p{ext}').replace('\\', '/')
-        #output_path = os.path.normpath(output_path)
-        print(f"Processing {input_path} to {output_path}")
+        #print(f"Processing {input_path} to {output_path}")
         change_video_resolution(input_path, output_path)
 
 # Download video from S3
@@ -63,14 +63,14 @@ def download_video (bucket_name,s3_object_key):
         object_name = s3_object_key.split("/")[-1]
         Raw_videos_destination_full_path = (os.path.join(Raw_videos_destination_path, object_name))
         s3_client.Object(bucket_name, s3_object_key).download_file(Raw_videos_destination_full_path)
-        time.sleep(60) # wait for 60 sec
+        #time.sleep(60) # wait for 60 sec
         print ("120 sec Completed, pogressing")
         process_videos_in_folder()
     else :
         object_name = s3_object_key
         Raw_videos_destination_full_path = (os.path.join(Raw_videos_destination_path, object_name))
         s3_client.Object(bucket_name, object_name).download_file(Raw_videos_destination_full_path)
-        time.sleep(60) # wait for 60 sec
+        #time.sleep(60) # wait for 60 sec
         print ("120 sec Completed, pogressing")
         process_videos_in_folder()
 
